@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.funcoding.fungallery.R
 import cn.funcoding.fungallery.model.MediaStoreImage
 
-class ImageViewHolder(view: View, onClick: (MediaStoreImage) -> Unit) :
+class ImageViewHolder(
+    view: View,
+    onClick: (MediaStoreImage) -> Unit?,
+    onLongClick: (MediaStoreImage) -> Unit?
+) :
     RecyclerView.ViewHolder(view) {
     val rootView = view
     val imageView: ImageView = view.findViewById(R.id.image)
@@ -15,6 +19,14 @@ class ImageViewHolder(view: View, onClick: (MediaStoreImage) -> Unit) :
         imageView.setOnClickListener {
             val image = rootView.tag as? MediaStoreImage ?: return@setOnClickListener
             onClick(image)
+        }
+        imageView.setOnLongClickListener {
+            if (rootView.tag is MediaStoreImage) {
+                onLongClick(rootView.tag as MediaStoreImage)
+                true
+            } else {
+                false
+            }
         }
     }
 }

@@ -7,12 +7,15 @@ import cn.funcoding.fungallery.R
 import cn.funcoding.fungallery.model.MediaStoreImage
 import com.bumptech.glide.Glide
 
-class GalleryAdapter(private val onClick: (MediaStoreImage) -> Unit) :
+class GalleryAdapter(
+    private val onClick: (MediaStoreImage) -> Unit,
+    private val onLongClick: (MediaStoreImage) -> Unit
+) :
     ListAdapter<MediaStoreImage, ImageViewHolder>(MediaStoreImage.DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.gallery_layout, parent, false)
-        return ImageViewHolder(view, onClick)
+        return ImageViewHolder(view, onClick,onLongClick)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {

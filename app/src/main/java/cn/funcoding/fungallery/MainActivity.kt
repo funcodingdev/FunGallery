@@ -1,6 +1,9 @@
 package cn.funcoding.fungallery
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,9 +23,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val galleryAdapter = GalleryAdapter { image ->
-            Toast.makeText(this, image.displayName, Toast.LENGTH_SHORT).show()
-        }
+        val galleryAdapter = GalleryAdapter({ image ->
+
+        }, { image ->
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("Path", image.contentUri.toString())
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, getString(R.string.clip_to_clipboard), Toast.LENGTH_SHORT).show()
+        })
 
         binding.gallery.also { view ->
             view.layoutManager = GridLayoutManager(this, 3)
